@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Услуги — Прикормка от суши</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #222;
+            background: #fdfdfd;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo { font-size: 24px; font-weight: 800; color: #2d2d2d; }
+        .logo span { color: #e67e22; }
+        .logo i { color: #e67e22; margin-right: 8px; }
+        nav {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px 15px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: #e67e22; }
+        .btn {
+            display: inline-block;
+            background: #e67e22;
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 15px;
+            text-align: center;
+        }
+        .btn:hover { background: #d35400; }
+        .btn-outline {
+            background: transparent;
+            color: #e67e22;
+            border: 2px solid #e67e22;
+            padding: 8px 20px;
+        }
+        .btn-outline:hover {
+            background: #e67e22;
+            color: #fff;
+        }
+        .btn-sm { padding: 6px 16px; font-size: 14px; }
+        .page-title {
+            font-size: 38px;
+            font-weight: 700;
+            text-align: center;
+            margin: 40px 0 10px;
+        }
+        .page-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        .filters a {
+            background: #f0f0f0;
+            padding: 8px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .filters a:hover, .filters a.active {
+            background: #e67e22;
+            color: #fff;
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .service-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 25px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border: 1px solid #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+        .service-card:hover { transform: translateY(-5px); }
+        .service-card .icon { font-size: 36px; color: #e67e22; margin-bottom: 10px; }
+        .service-card h3 { font-size: 20px; margin-bottom: 6px; }
+        .service-card .price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #e67e22;
+            margin: 6px 0;
+        }
+        .service-card .price small { font-size: 14px; font-weight: 400; color: #888; }
+        .service-card .desc { color: #555; font-size: 15px; margin: 10px 0 15px; flex-grow: 1; }
+        .service-card .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
+        .service-card .tags span {
+            background: #f0f0f0;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #555;
+        }
+        .service-card .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+            flex-wrap: wrap;
+        }
+        .service-card .btn-group .btn { flex: 1; text-align: center; min-width: 80px; }
+        footer {
+            background: #1a1a1a;
+            color: #aaa;
+            padding: 30px 0 20px;
+            margin-top: 60px;
+            text-align: center;
+        }
+        footer a { color: #ddd; text-decoration: none; margin: 0 8px; }
+        footer a:hover { color: #e67e22; }
+        .footer-contacts {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .footer-contacts a {
+            background: #2a2a2a;
+            padding: 6px 16px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #ddd;
+            text-decoration: none;
+        }
+        .footer-contacts a:hover { color: #e67e22; }
+
+        @media (max-width: 1024px) {
+            .page-title { font-size: 32px; }
+            .services-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+        }
+
+        @media (max-width: 768px) {
+            header .container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            nav {
+                justify-content: center;
+            }
+            nav a {
+                font-size: 14px;
+                margin: 0 8px;
+            }
+            .page-title { font-size: 26px; }
+            .page-subtitle { font-size: 16px; }
+            .services-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+            .service-card { padding: 20px 15px; }
+            .service-card h3 { font-size: 17px; }
+            .service-card .price { font-size: 20px; }
+        }
+
+        @media (max-width: 480px) {
+            .services-grid { grid-template-columns: 1fr; }
+            .service-card .btn-group { flex-direction: column; }
+            .service-card .btn-group .btn { width: 100%; }
+            .filters { gap: 6px; }
+            .filters a { font-size: 12px; padding: 6px 14px; }
+            .footer-contacts { flex-direction: column; align-items: center; }
+            .footer-contacts a { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="logo"><i class="fas fa-utensils"></i>Прикормка <span>от суши</span></div>
+        <nav>
+            <a href="index.html">Главная</a>
+            <a href="uslugi.html" style="color:#e67e22;">Услуги</a>
+            <a href="index.html#about">О нас</a>
+            <a href="index.html#contacts">Контакты</a>
+            <a href="login.html"><i class="fas fa-user"></i> Вход</a>
+            <a href="register.html" class="btn btn-outline" style="padding: 8px 20px; font-size: 14px;">Регистрация</a>
+        </nav>
+    </div>
+</header>
+
+<div class="container">
+    <h1 class="page-title">Наши услуги</h1>
+    <p class="page-subtitle">Выберите то, что нужно вашему проекту</p>
+
+    <div class="filters">
+        <a href="#" class="active">Все</a>
+        <a href="#">Тексты</a>
+        <a href="#">Изображения</a>
+        <a href="#">Видео</a>
+        <a href="#">3D</a>
+        <a href="#">Сайты и боты</a>
+        <a href="#">AI-агенты</a>
+    </div>
+
+    <div class="services-grid">
+        <div class="service-card">
+            <div class="icon"><i class="fas fa-video"></i></div>
+            <h3>Генерация видео</h3>
+            <div class="price">1 000 ₽</div>
+            <div class="desc">Создание видео-контента: от коротких рилсов до атмосферных клипов. Сценарий, монтаж, цветокоррекция.</div>
+            <div class="tags"><span>1 день</span><span>озвучка</span></div>
+            <div class="btn-group">
+                <a href="#" class="btn btn-sm">Подробнее</a>
+                <a href="login.html" class="btn btn-sm btn-outline">Заказать</a>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="icon"><i class="fas fa-image"></i></div>
+            <h3>Нейро картинки</h3>
+            <div class="price">от 800 ₽</div>
+            <div class="desc">Иллюстрации, обложки, раскадровки, схемы, слайды для презентаций. Сохраняем стиль героев.</div>
+            <div class="tags"><span>подборка</span><span>стиль</span></div>
+            <div class="btn-group">
+                <a href="#" class="btn btn-sm">Подробнее</a>
+                <a href="login.html" class="btn btn-sm btn-outline">Заказать</a>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="icon"><i class="fas fa-cube"></i></div>
+            <h3>3D-моделирование</h3>
+            <div class="price">от 400 ₽</div>
+            <div class="desc">Создание 3D-моделей по фото для печати: подстаканники, детали, прототипы. Формат STL.</div>
+            <div class="tags"><span>STL</span><span>печать</span></div>
+            <div class="btn-group">
+                <a href="#" class="btn btn-sm">Подробнее</a>
+                <a href="login.html" class="btn btn-sm btn-outline">Заказать</a>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="icon"><i class="fas fa-pen-fancy"></i></div>
+            <h3>Быстрые тексты</h3>
+            <div class="price">400 ₽ / 1000 зн.</div>
+            <div class="desc">Уникальные тексты, статьи, посты, описания товаров. SEO-оптимизация, рерайт, редактура.</div>
+            <div class="tags"><span>12 ч</span><span>SEO</span></div>
+            <div class="btn-group">
+                <a href="#" class="btn btn-sm">Подробнее</a>
+                <a href="login.html" class="btn btn-sm btn-outline">Заказать</a>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="icon"><i class="fas fa-blog"></i></div>
+            <h3>Пост для блога</h3>
+            <div class="price">от 1 000 ₽</div>
+            <div class="desc">Посты, которые хочется читать: для Telegram, VK, Дзена. Текст + уникальное изображение.</div>
+            <div class="tags"><span>1000 зн</span><span>картинка</span></div>
+            <div class="btn-group">
+                <a href="#" class="btn btn-sm">Подробнее</a>
+                <a href="login.html" class="btn btn-sm btn-outline">Заказать</a>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="icon"><i class="fas fa-robot"></i></div>
+            <h3>AI-агенты и промпты</h3>
+            <div class="price">от 4 500 ₽</div>
+            <div class="desc">Сборка AI-агентов, подборки промптов, консультации, настройка нейросетей под ваш бизнес.</div>
+            <div class="tags"><span>автоматизация</span><span>обучение</span></div>
+            <div class="btn-group">
+                <a href="#" class="btn btn-sm">Подробнее</a>
+                <a href="login.html" class="btn btn-sm btn-outline">Заказать</a>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="icon"><i class="fas fa-code"></i></div>
+            <h3>Сайты и боты</h3>
+            <div class="price">от 2 500 ₽</div>
+            <div class="desc">Любые сайты и боты: корзина, админка, интеграция платежей, адаптивная вёрстка.</div>
+            <div class="tags"><span>WordPress</span><span>Go/Python</span></div>
+            <div class="btn-group">
+                <a href="#" class="btn btn-sm">Подробнее</a>
+                <a href="login.html" class="btn btn-sm btn-outline">Заказать</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer id="contacts">
+    <div class="container">
+        <div style="font-size: 22px; font-weight: 700; color: #e67e22; margin-bottom: 10px;">Прикормка от суши</div>
+        <div class="footer-contacts">
+            <a href="https://vk.ru/prikormka_odureech" target="_blank"><i class="fab fa-vk"></i> Сообщество VK</a>
+            <a href="https://vk.ru/evilfinished" target="_blank"><i class="fas fa-user-circle"></i> Елена (личная)</a>
+            <a href="https://t.me/evilfinished" target="_blank"><i class="fab fa-telegram"></i> @evilfinished</a>
+            <a href="mailto:kvazar.dodo@gmail.com"><i class="fas fa-envelope"></i> kvazar.dodo@gmail.com</a>
+        </div>
+        <div style="margin: 15px 0 5px; font-size: 14px;"><a href="#" style="color:#aaa;">Политика конфиденциальности</a></div>
+        <div style="font-size: 13px; color: #777;">&copy; 2026 Прикормка от суши. Все права защищены.</div>
+    </div>
+</footer>
+
+</body>
+</html>

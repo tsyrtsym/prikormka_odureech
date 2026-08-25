@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход — Прикормка от суши</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px 0;
+        }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo { font-size: 24px; font-weight: 800; color: #2d2d2d; }
+        .logo span { color: #e67e22; }
+        .logo i { color: #e67e22; margin-right: 8px; }
+        nav {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px 15px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: #e67e22; }
+        .auth-container {
+            max-width: 420px;
+            margin: 60px auto;
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px 35px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+        }
+        .auth-container h2 {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .auth-container .sub {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+        .auth-container .sub a { color: #e67e22; text-decoration: none; font-weight: 600; }
+        .auth-container .sub a:hover { text-decoration: underline; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #333;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 16px;
+            transition: border 0.2s;
+            background: #fafafa;
+        }
+        .form-group input:focus {
+            border-color: #e67e22;
+            outline: none;
+            background: #fff;
+        }
+        .form-group .forgot {
+            text-align: right;
+            margin-top: 6px;
+        }
+        .form-group .forgot a {
+            color: #888;
+            font-size: 13px;
+            text-decoration: none;
+        }
+        .form-group .forgot a:hover { color: #e67e22; }
+        .btn {
+            display: inline-block;
+            background: #e67e22;
+            color: #fff;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+            text-align: center;
+        }
+        .btn:hover { background: #d35400; }
+        .separator {
+            text-align: center;
+            color: #aaa;
+            font-size: 13px;
+            margin: 25px 0 15px;
+            position: relative;
+        }
+        .separator::before,
+        .separator::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: #ddd;
+        }
+        .separator::before { left: 0; }
+        .separator::after { right: 0; }
+        .social-login {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        .social-login a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: 1px solid #ddd;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+            flex: 1;
+        }
+        .social-login a:hover { background: #f5f5f5; }
+        .social-login a i { font-size: 20px; }
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #666;
+        }
+        .login-link a { color: #e67e22; font-weight: 600; text-decoration: none; }
+        .login-link a:hover { text-decoration: underline; }
+        footer {
+            background: #1a1a1a;
+            color: #aaa;
+            padding: 30px 0 20px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        footer a { color: #ddd; text-decoration: none; margin: 0 8px; }
+        footer a:hover { color: #e67e22; }
+        .footer-contacts {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .footer-contacts a {
+            background: #2a2a2a;
+            padding: 6px 16px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #ddd;
+            text-decoration: none;
+        }
+        .footer-contacts a:hover { color: #e67e22; }
+
+        @media (max-width: 768px) {
+            header .container { flex-direction: column; gap: 15px; }
+            nav { justify-content: center; }
+            nav a { font-size: 14px; margin: 0 8px; }
+            .auth-container { margin: 30px 15px; padding: 25px 20px; }
+        }
+
+        @media (max-width: 480px) {
+            .auth-container { padding: 20px 15px; }
+            .auth-container h2 { font-size: 22px; }
+            .social-login { flex-direction: column; }
+            .social-login a { width: 100%; }
+            .footer-contacts { flex-direction: column; align-items: center; }
+            .footer-contacts a { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="logo"><i class="fas fa-utensils"></i>Прикормка <span>от суши</span></div>
+        <nav>
+            <a href="index.html">Главная</a>
+            <a href="uslugi.html">Услуги</a>
+            <a href="index.html#contacts">Контакты</a>
+            <a href="login.html" style="color:#e67e22;"><i class="fas fa-user"></i> Вход</a>
+            <a href="register.html" class="btn btn-outline" style="padding: 8px 20px; font-size: 14px;">Регистрация</a>
+        </nav>
+    </div>
+</header>
+
+<div class="auth-container">
+    <h2>Добро пожаловать</h2>
+    <p class="sub">Войдите в свой аккаунт</p>
+
+    <form action="cabinet.html">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="example@mail.ru" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <input type="password" id="password" placeholder="••••••••" required>
+            <div class="forgot"><a href="#">Забыли пароль?</a></div>
+        </div>
+        <button type="submit" class="btn">Войти</button>
+    </form>
+
+    <div class="separator">или</div>
+
+    <div class="social-login">
+        <a href="#"><i class="fab fa-vk"></i> VK</a>
+        <a href="#"><i class="fab fa-google"></i> Google</a>
+    </div>
+
+    <p class="login-link">Нет аккаунта? <a href="register.html">Зарегистрируйтесь</a></p>
+</div>
+
+<footer id="contacts">
+    <div class="container">
+        <div style="font-size: 20px; font-weight: 700; color: #e67e22; margin-bottom: 10px;">Прикормка от суши</div>
+        <div class="footer-contacts">
+            <a href="https://vk.ru/prikormka_odureech" target="_blank"><i class="fab fa-vk"></i> Сообщество VK</a>
+            <a href="https://vk.ru/evilfinished" target="_blank"><i class="fas fa-user-circle"></i> Елена (личная)</a>
+            <a href="https://t.me/evilfinished" target="_blank"><i class="fab fa-telegram"></i> @evilfinished</a>
+            <a href="mailto:kvazar.dodo@gmail.com"><i class="fas fa-envelope"></i> kvazar.dodo@gmail.com</a>
+        </div>
+        <div style="font-size: 13px; color: #777; margin-top: 10px;">&copy; 2026 Прикормка от суши. Все права защищены.</div>
+    </div>
+</footer>
+
+</body>
+</html>

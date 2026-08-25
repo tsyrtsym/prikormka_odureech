@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прикормка от суши — контент с нейросетями</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #222;
+            background: #fdfdfd;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #2d2d2d;
+        }
+        .logo span { color: #e67e22; }
+        .logo i { color: #e67e22; margin-right: 8px; }
+        nav {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px 15px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: #e67e22; }
+        .btn {
+            display: inline-block;
+            background: #e67e22;
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+        .btn:hover { background: #d35400; }
+        .btn-outline {
+            background: transparent;
+            color: #e67e22;
+            border: 2px solid #e67e22;
+            padding: 10px 26px;
+        }
+        .btn-outline:hover {
+            background: #e67e22;
+            color: #fff;
+        }
+        section { padding: 60px 0; }
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        .hero {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        .hero h1 span { color: #e67e22; }
+        .hero p {
+            font-size: 20px;
+            color: #555;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        .hero .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .service-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: transform 0.2s;
+            border: 1px solid #f0f0f0;
+        }
+        .service-card:hover { transform: translateY(-8px); }
+        .service-card i {
+            font-size: 40px;
+            color: #e67e22;
+            margin-bottom: 15px;
+        }
+        .service-card h3 { font-size: 18px; margin-bottom: 8px; }
+        .service-card p { font-size: 14px; color: #666; }
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+        .step { padding: 20px; }
+        .step .num {
+            display: inline-block;
+            background: #e67e22;
+            color: #fff;
+            font-size: 24px;
+            font-weight: 700;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            text-align: center;
+        }
+        .audience-item {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            text-align: center;
+        }
+        .price-item {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            border: 1px solid #eee;
+        }
+        .price-item .price {
+            font-size: 28px;
+            font-weight: 700;
+            color: #e67e22;
+        }
+        .testdrive {
+            background: #f9f9f9;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .testdrive input, .testdrive textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            margin-top: 15px;
+            font-size: 16px;
+        }
+        .testdrive textarea {
+            border-radius: 16px;
+            height: 100px;
+            resize: vertical;
+        }
+        .testdrive .btn { margin-top: 20px; width: 100%; }
+        footer {
+            background: #1a1a1a;
+            color: #aaa;
+            padding: 40px 0 20px;
+            margin-top: 40px;
+        }
+        footer a { color: #ddd; text-decoration: none; transition: color 0.2s; }
+        footer a:hover { color: #e67e22; }
+        .contact-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #2a2a2a;
+            padding: 8px 18px;
+            border-radius: 30px;
+            text-decoration: none;
+            color: #ddd !important;
+            transition: background 0.2s;
+        }
+        .contact-button:hover {
+            background: #3a3a3a;
+            color: #e67e22 !important;
+        }
+        .contact-button i { font-size: 18px; }
+
+        /* Медиа-запросы для адаптации */
+        @media (max-width: 1024px) {
+            .hero h1 { font-size: 38px; }
+            .section-title { font-size: 30px; }
+        }
+
+        @media (max-width: 768px) {
+            header .container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            nav {
+                justify-content: center;
+            }
+            nav a {
+                font-size: 14px;
+                margin: 0 8px;
+            }
+            .hero h1 { font-size: 28px; }
+            .hero p { font-size: 17px; }
+            .section-title { font-size: 26px; }
+            .services-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+            .steps { grid-template-columns: 1fr; }
+            .price-grid { grid-template-columns: 1fr 1fr; }
+            .testdrive { padding: 25px 20px; }
+            .contact-button { padding: 6px 14px; font-size: 14px; }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 22px; }
+            .hero .btn-group { flex-direction: column; align-items: center; }
+            .hero .btn-group .btn { width: 100%; max-width: 280px; }
+            .services-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+            .service-card { padding: 20px 12px; }
+            .service-card i { font-size: 30px; }
+            .price-grid { grid-template-columns: 1fr; }
+            .section-title { font-size: 22px; }
+            .footer-contacts { flex-direction: column; align-items: center; }
+            .contact-button { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="logo"><i class="fas fa-utensils"></i>Прикормка <span>от суши</span></div>
+        <nav>
+            <a href="index.html">Главная</a>
+            <a href="uslugi.html">Услуги</a>
+            <a href="index.html#about">О нас</a>
+            <a href="index.html#contacts">Контакты</a>
+            <a href="login.html"><i class="fas fa-user"></i> Вход</a>
+            <a href="register.html" class="btn btn-outline" style="padding: 8px 20px; font-size: 14px;">Регистрация</a>
+        </nav>
+    </div>
+</header>
+
+<section class="hero" id="about">
+    <div class="container">
+        <h1>Контент с нейросетями, <br><span>который работает</span></h1>
+        <p>Тексты, изображения, видео, 3D-модели и AI-агенты — без лишней бюрократии. Быстро, качественно, с душой.</p>
+        <div class="btn-group">
+            <a href="login.html" class="btn">Заказать сейчас</a>
+            <a href="index.html#testdrive" class="btn btn-outline">Получить консультацию</a>
+        </div>
+    </div>
+</section>
+
+<section id="services">
+    <div class="container">
+        <h2 class="section-title">Что я делаю</h2>
+        <p class="section-subtitle">Выберите то, что нужно вашему проекту</p>
+        <div class="services-grid">
+            <div class="service-card"><i class="fas fa-pen-fancy"></i><h3>Тексты</h3><p>Посты, статьи, сценарии, рерайт</p></div>
+            <div class="service-card"><i class="fas fa-image"></i><h3>Изображения</h3><p>Иллюстрации, обложки, баннеры</p></div>
+            <div class="service-card"><i class="fas fa-video"></i><h3>Видео</h3><p>Рилсы, клипы, озвучка</p></div>
+            <div class="service-card"><i class="fas fa-cube"></i><h3>3D-модели</h3><p>По фото для печати или визуализации</p></div>
+            <div class="service-card"><i class="fas fa-code"></i><h3>Сайты и боты</h3><p>От визитки до интернет-магазина</p></div>
+            <div class="service-card"><i class="fas fa-robot"></i><h3>AI-агенты</h3><p>Автоматизация общения с клиентами</p></div>
+        </div>
+    </div>
+</section>
+
+<section id="how" style="background: #fafafa;">
+    <div class="container">
+        <h2 class="section-title">Как это работает</h2>
+        <p class="section-subtitle">Три простых шага к вашему контенту</p>
+        <div class="steps">
+            <div class="step"><span class="num">1</span><h3>Опишите задачу</h3><p>Расскажите, что нужно сделать и для кого</p></div>
+            <div class="step"><span class="num">2</span><h3>Я создаю контент</h3><p>Нейросети + моя редактура и доработка</p></div>
+            <div class="step"><span class="num">3</span><h3>Вы получаете результат</h3><p>Готовый файл или настроенный поток</p></div>
+        </div>
+    </div>
+</section>
+
+<section id="forwhom">
+    <div class="container">
+        <h2 class="section-title">Для кого</h2>
+        <p class="section-subtitle">Мои услуги подходят</p>
+        <div class="audience-grid">
+            <div class="audience-item">📱 Блогеры</div>
+            <div class="audience-item">🏢 Малый бизнес</div>
+            <div class="audience-item">📈 Маркетологи</div>
+            <div class="audience-item">✍️ Авторы</div>
+        </div>
+    </div>
+</section>
+
+<section id="portfolio" style="background: #fafafa;">
+    <div class="container">
+        <h2 class="section-title">Портфолио</h2>
+        <p class="section-subtitle">Примеры работ — скоро здесь будут реальные кейсы</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap:20px; text-align:center; color:#888;">
+            <div>📄 Текст</div><div>🖼️ Изображение</div><div>🎬 Видео</div><div>🧊 3D-модель</div>
+        </div>
+    </div>
+</section>
+
+<section id="prices">
+    <div class="container">
+        <h2 class="section-title">Цены</h2>
+        <p class="section-subtitle">Стартовые цены для ориентира</p>
+        <div class="price-grid">
+            <div class="price-item"><h3>Быстрый текст</h3><div class="price">от 400 ₽</div><small>за 1000 знаков</small></div>
+            <div class="price-item"><h3>Пост для блога</h3><div class="price">от 1000 ₽</div><small>за 1000 знаков + картинка</small></div>
+            <div class="price-item"><h3>Изображение</h3><div class="price">от 800 ₽</div><small>за 1 иллюстрацию</small></div>
+            <div class="price-item"><h3>Видео</h3><div class="price">от 1000 ₽</div><small>за короткий ролик</small></div>
+            <div class="price-item"><h3>3D-модель</h3><div class="price">от 400 ₽</div><small>по фото</small></div>
+            <div class="price-item"><h3>Сайт / бот</h3><div class="price">от 2500 ₽</div><small>под ключ</small></div>
+        </div>
+    </div>
+</section>
+
+<section id="testdrive">
+    <div class="container">
+        <div class="testdrive">
+            <h2 style="font-size: 28px;">Бесплатный тест-драйв</h2>
+            <p style="color: #555; margin: 10px 0 20px;">Опишите задачу и получите 2 готовых промпта под вашу нишу</p>
+            <form action="#">
+                <input type="text" placeholder="Ваше имя (или псевдоним)" required>
+                <input type="email" placeholder="Ваш email или телефон" required>
+                <textarea placeholder="Опишите, что вам нужно (например, пост для Instagram о путешествиях)"></textarea>
+                <button type="submit" class="btn">Получить промпты бесплатно</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<footer id="contacts">
+    <div class="container" style="text-align: center;">
+        <div style="font-size: 24px; font-weight: 700; color: #e67e22; margin-bottom: 15px;">Прикормка от суши</div>
+        <div style="margin: 15px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;">
+            <a href="https://vk.ru/prikormka_odureech" target="_blank" class="contact-button"><i class="fab fa-vk" style="color: #2787F5;"></i> Сообщество VK</a>
+            <a href="https://vk.ru/evilfinished" target="_blank" class="contact-button"><i class="fas fa-user-circle" style="color: #2787F5;"></i> Елена (личная)</a>
+            <a href="https://t.me/evilfinished" target="_blank" class="contact-button"><i class="fab fa-telegram" style="color: #26A5E4;"></i> @evilfinished</a>
+            <a href="mailto:kvazar.dodo@gmail.com" class="contact-button"><i class="fas fa-envelope" style="color: #D14836;"></i> kvazar.dodo@gmail.com</a>
+        </div>
+        <div style="margin: 20px 0 10px; font-size: 14px;"><a href="#" style="color: #aaa;">Политика конфиденциальности</a></div>
+        <div style="font-size: 13px; color: #777;">&copy; 2026 Прикормка от суши. Все права защищены.</div>
+    </div>
+</footer>
+
+</body>
+</html>

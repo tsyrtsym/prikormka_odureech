@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет — Прикормка от суши</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px 0;
+        }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo { font-size: 24px; font-weight: 800; color: #2d2d2d; }
+        .logo span { color: #e67e22; }
+        .logo i { color: #e67e22; margin-right: 8px; }
+        nav {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px 15px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: #e67e22; }
+        .btn {
+            display: inline-block;
+            background: #e67e22;
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 15px;
+            text-align: center;
+        }
+        .btn:hover { background: #d35400; }
+        .btn-sm { padding: 6px 16px; font-size: 14px; }
+        .cabinet {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        .cabinet-sidebar {
+            background: #fff;
+            border-radius: 20px;
+            padding: 25px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            height: fit-content;
+        }
+        .cabinet-sidebar .user {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .cabinet-sidebar .user .avatar {
+            font-size: 60px;
+            color: #ccc;
+            margin-bottom: 8px;
+        }
+        .cabinet-sidebar .user h3 { font-size: 18px; }
+        .cabinet-sidebar .user p { font-size: 13px; color: #888; word-break: break-all; }
+        .cabinet-sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 12px;
+            color: #444;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+            margin-bottom: 2px;
+        }
+        .cabinet-sidebar nav a i { width: 20px; color: #999; }
+        .cabinet-sidebar nav a:hover { background: #f0f0f0; }
+        .cabinet-sidebar nav a.active {
+            background: #e67e22;
+            color: #fff;
+        }
+        .cabinet-sidebar nav a.active i { color: #fff; }
+        .cabinet-content {
+            background: #fff;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        .cabinet-content .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: #f9f9f9;
+            border-radius: 14px;
+            padding: 18px 15px;
+            text-align: center;
+        }
+        .stat-card .num { font-size: 28px; font-weight: 700; color: #e67e22; }
+        .stat-card .label { font-size: 13px; color: #666; }
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .order-item:last-child { border-bottom: none; }
+        .order-item .info h4 { font-size: 16px; }
+        .order-item .info p { font-size: 13px; color: #666; }
+        .order-item .status {
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .status.new { background: #e3f2fd; color: #0d47a1; }
+        .status.work { background: #fff3e0; color: #e65100; }
+        .status.done { background: #e8f5e9; color: #2e7d32; }
+        .status.files { background: #f3e5f5; color: #6a1b9a; }
+        .order-item .btn-sm {
+            padding: 6px 16px;
+            border-radius: 30px;
+            border: none;
+            background: #e67e22;
+            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .order-form label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            margin: 15px 0 6px;
+        }
+        .order-form input, .order-form select, .order-form textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 15px;
+            background: #fafafa;
+        }
+        .order-form textarea { border-radius: 16px; height: 120px; resize: vertical; }
+        .order-form .btn { margin-top: 20px; width: auto; }
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .file-item a { color: #e67e22; text-decoration: none; font-weight: 600; }
+        .profile-form .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .profile-form input, .profile-form select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 15px;
+            background: #fafafa;
+            margin-bottom: 10px;
+        }
+        .profile-form .btn { width: auto; }
+        footer {
+            background: #1a1a1a;
+            color: #aaa;
+            padding: 30px 0 20px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        footer a { color: #ddd; text-decoration: none; margin: 0 8px; }
+        footer a:hover { color: #e67e22; }
+        .footer-contacts {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .footer-contacts a {
+            background: #2a2a2a;
+            padding: 6px 16px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #ddd;
+            text-decoration: none;
+        }
+        .footer-contacts a:hover { color: #e67e22; }
+
+        @media (max-width: 1024px) {
+            .cabinet { grid-template-columns: 220px 1fr; gap: 20px; }
+        }
+
+        @media (max-width: 768px) {
+            header .container { flex-direction: column; gap: 15px; }
+            nav { justify-content: center; }
+            nav a { font-size: 14px; margin: 0 8px; }
+            .cabinet { grid-template-columns: 1fr; }
+            .cabinet-sidebar { order: 2; }
+            .profile-form .form-row { grid-template-columns: 1fr; }
+            .order-item { flex-direction: column; align-items: stretch; text-align: center; }
+            .order-item .status { align-self: center; }
+            .order-item .btn-sm { align-self: center; }
+        }
+
+        @media (max-width: 480px) {
+            .stats { grid-template-columns: 1fr 1fr; }
+            .stat-card { padding: 12px 10px; }
+            .stat-card .num { font-size: 22px; }
+            .cabinet-content { padding: 20px 15px; }
+            .order-form .btn { width: 100%; }
+            .profile-form .btn { width: 100%; }
+            .footer-contacts { flex-direction: column; align-items: center; }
+            .footer-contacts a { width: 100%; justify-content: center; }
+            .file-item { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="logo"><i class="fas fa-utensils"></i>Прикормка <span>от суши</span></div>
+        <nav>
+            <a href="index.html">Главная</a>
+            <a href="uslugi.html">Услуги</a>
+            <a href="index.html#contacts">Контакты</a>
+            <a href="#" style="color:#e67e22;"><i class="fas fa-user"></i> Кабинет</a>
+            <a href="login.html" style="color:#d35400;">Выйти</a>
+        </nav>
+    </div>
+</header>
+
+<div class="container">
+    <div class="cabinet">
+
+        <aside class="cabinet-sidebar">
+            <div class="user">
+                <div class="avatar"><i class="fas fa-user-circle"></i></div>
+                <h3>Елена</h3>
+                <p>kvazar.dodo@gmail.com</p>
+            </div>
+            <nav>
+                <a href="#" class="active" data-tab="dashboard"><i class="fas fa-th-large"></i> Дашборд</a>
+                <a href="#" data-tab="orders"><i class="fas fa-list"></i> Заказы</a>
+                <a href="#" data-tab="new-order"><i class="fas fa-plus-circle"></i> Создать заказ</a>
+                <a href="#" data-tab="files"><i class="fas fa-download"></i> Готовые файлы</a>
+                <a href="#" data-tab="profile"><i class="fas fa-cog"></i> Настройки</a>
+                <a href="login.html" style="color:#d35400; margin-top:15px;"><i class="fas fa-sign-out-alt"></i> Выйти</a>
+            </nav>
+        </aside>
+
+        <main class="cabinet-content">
+            <div id="dashboard" class="tab-content">
+                <h2 class="page-title">Дашборд</h2>
+                <div class="stats">
+                    <div class="stat-card"><div class="num">3</div><div class="label">Активных заказов</div></div>
+                    <div class="stat-card"><div class="num">12</div><div class="label">Всего заказов</div></div>
+                    <div class="stat-card"><div class="num">2</div><div class="label">Готово к скачиванию</div></div>
+                </div>
+                <h3 style="margin-bottom:15px; font-size:18px;">Последние заказы</h3>
+                <div class="order-item">
+                    <div class="info"><h4>Пост для блога</h4><p>15.08.2026</p></div>
+                    <span class="status work">В работе</span>
+                    <a href="#" class="btn-sm">Подробнее</a>
+                </div>
+                <div class="order-item">
+                    <div class="info"><h4>Генерация видео</h4><p>10.08.2026</p></div>
+                    <span class="status done">Готово</span>
+                    <a href="#" class="btn-sm">Скачать</a>
+                </div>
+                <div class="order-item">
+                    <div class="info"><h4>3D-модель</h4><p>05.08.2026</p></div>
+                    <span class="status new">Новый</span>
+                    <a href="#" class="btn-sm">Подробнее</a>
+                </div>
+            </div>
+
+            <div id="orders" class="tab-content" style="display:none;">
+                <h2 class="page-title">Все заказы</h2>
+                <div class="order-item">
+                    <div class="info"><h4>Пост для блога</h4><p>15.08.2026</p></div>
+                    <span class="status work">В работе</span>
+                    <a href="#" class="btn-sm">Подробнее</a>
+                </div>
+                <div class="order-item">
+                    <div class="info"><h4>Генерация видео</h4><p>10.08.2026</p></div>
+                    <span class="status done">Готово</span>
+                    <a href="#" class="btn-sm">Скачать</a>
+                </div>
+                <div class="order-item">
+                    <div class="info"><h4>Нейро картинки</h4><p>08.08.2026</p></div>
+                    <span class="status done">Готово</span>
+                    <a href="#" class="btn-sm">Скачать</a>
+                </div>
+                <div class="order-item">
+                    <div class="info"><h4>3D-модель</h4><p>05.08.2026</p></div>
+                    <span class="status new">Новый</span>
+                    <a href="#" class="btn-sm">Подробнее</a>
+                </div>
+                <div class="order-item">
+                    <div class="info"><h4>Сайт-визитка</h4><p>01.08.2026</p></div>
+                    <span class="status files">Файлы загружены</span>
+                    <a href="#" class="btn-sm">Подробнее</a>
+                </div>
+            </div>
+
+            <div id="new-order" class="tab-content" style="display:none;">
+                <h2 class="page-title">Создать заказ</h2>
+                <form class="order-form">
+                    <label for="service">Услуга</label>
+                    <select id="service">
+                        <option>Генерация видео</option>
+                        <option>Нейро картинки</option>
+                        <option>3D-моделирование</option>
+                        <option>Быстрые тексты</option>
+                        <option>Пост для блога</option>
+                        <option>AI-агенты и промпты</option>
+                        <option>Сайты и боты</option>
+                    </select>
+                    <label for="topic">Тема задачи</label>
+                    <input type="text" id="topic" placeholder="Кратко о чём заказ" required>
+                    <label for="desc">Описание задачи</label>
+                    <textarea id="desc" placeholder="Подробно опишите, что нужно сделать" required></textarea>
+                    <label for="file">Приложить файлы / референсы</label>
+                    <input type="file" id="file" multiple style="border:none; padding:0;">
+                    <button type="submit" class="btn">Отправить заказ</button>
+                </form>
+            </div>
+
+            <div id="files" class="tab-content" style="display:none;">
+                <h2 class="page-title">Готовые файлы</h2>
+                <div class="file-item"><span>Пост для блога (15.08.2026)</span><a href="#">Скачать ZIP</a></div>
+                <div class="file-item"><span>Генерация видео (10.08.2026)</span><a href="#">Скачать MP4</a></div>
+                <div class="file-item"><span>Нейро картинки (08.08.2026)</span><a href="#">Скачать ZIP</a></div>
+                <div style="margin-top:20px; padding-top:20px; border-top:1px solid #eee;">
+                    <h4 style="margin-bottom:10px;">Оставить отзыв</h4>
+                    <textarea rows="3" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:12px; resize:vertical; font-size:15px;" placeholder="Напишите, что вам понравилось..."></textarea>
+                    <button class="btn" style="width:auto; margin-top:10px; padding:10px 30px;">Отправить отзыв</button>
+                </div>
+            </div>
+
+            <div id="profile" class="tab-content" style="display:none;">
+                <h2 class="page-title">Настройки профиля</h2>
+                <form class="profile-form">
+                    <div class="form-row">
+                        <div><label>Имя</label><input type="text" value="Елена"></div>
+                        <div><label>Фамилия</label><input type="text" value="Сомова"></div>
+                    </div>
+                    <label>Email</label><input type="email" value="kvazar.dodo@gmail.com">
+                    <label>Телефон</label><input type="tel" value="+7 (999) 123-45-67">
+                    <label>Способ связи</label>
+                    <select><option>Email</option><option selected>Telegram</option><option>VK</option></select>
+                    <label>Новый пароль</label>
+                    <input type="password" placeholder="Оставьте пустым, если не хотите менять">
+                    <button type="submit" class="btn" style="padding:12px 40px; margin-top:15px;">Сохранить изменения</button>
+                </form>
+            </div>
+        </main>
+
+    </div>
+</div>
+
+<footer id="contacts">
+    <div class="container">
+        <div style="font-size: 20px; font-weight: 700; color: #e67e22; margin-bottom: 10px;">Прикормка от суши</div>
+        <div class="footer-contacts">
+            <a href="https://vk.ru/prikormka_odureech" target="_blank"><i class="fab fa-vk"></i> Сообщество VK</a>
+            <a href="https://vk.ru/evilfinished" target="_blank"><i class="fas fa-user-circle"></i> Елена (личная)</a>
+            <a href="https://t.me/evilfinished" target="_blank"><i class="fab fa-telegram"></i> @evilfinished</a>
+            <a href="mailto:kvazar.dodo@gmail.com"><i class="fas fa-envelope"></i> kvazar.dodo@gmail.com</a>
+        </div>
+        <div style="font-size: 13px; color: #777; margin-top: 10px;">&copy; 2026 Прикормка от суши. Все права защищены.</div>
+    </div>
+</footer>
+
+<script>
+    const sidebarLinks = document.querySelectorAll('.cabinet-sidebar nav a:not([href="login.html"])');
+    const contents = {
+        dashboard: document.getElementById('dashboard'),
+        orders: document.getElementById('orders'),
+        'new-order': document.getElementById('new-order'),
+        files: document.getElementById('files'),
+        profile: document.getElementById('profile')
+    };
+
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const tab = this.dataset.tab;
+            if (!tab) return;
+            sidebarLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+            Object.values(contents).forEach(el => el.style.display = 'none');
+            if (contents[tab]) contents[tab].style.display = 'block';
+        });
+    });
+</script>
+
+</body>
+</html>

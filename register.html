@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация — Прикормка от суши</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px 0;
+        }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo { font-size: 24px; font-weight: 800; color: #2d2d2d; }
+        .logo span { color: #e67e22; }
+        .logo i { color: #e67e22; margin-right: 8px; }
+        nav {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px 15px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: #e67e22; }
+        .auth-container {
+            max-width: 420px;
+            margin: 50px auto;
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px 35px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+        }
+        .auth-container h2 {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .auth-container .sub {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+        .auth-container .sub a { color: #e67e22; text-decoration: none; font-weight: 600; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #333;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 16px;
+            transition: border 0.2s;
+            background: #fafafa;
+        }
+        .form-group input:focus {
+            border-color: #e67e22;
+            outline: none;
+            background: #fff;
+        }
+        .form-group .hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+        .form-group.checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .form-group.checkbox input {
+            width: 18px;
+            height: 18px;
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+        .form-group.checkbox label {
+            font-weight: 400;
+            font-size: 14px;
+            color: #555;
+            cursor: pointer;
+        }
+        .form-group.checkbox label a {
+            color: #e67e22;
+            text-decoration: none;
+        }
+        .form-group.checkbox label a:hover { text-decoration: underline; }
+        .btn {
+            display: inline-block;
+            background: #e67e22;
+            color: #fff;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+            margin-top: 5px;
+            text-align: center;
+        }
+        .btn:hover { background: #d35400; }
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #666;
+        }
+        .login-link a { color: #e67e22; font-weight: 600; text-decoration: none; }
+        .login-link a:hover { text-decoration: underline; }
+        footer {
+            background: #1a1a1a;
+            color: #aaa;
+            padding: 30px 0 20px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        footer a { color: #ddd; text-decoration: none; margin: 0 8px; }
+        footer a:hover { color: #e67e22; }
+        .footer-contacts {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .footer-contacts a {
+            background: #2a2a2a;
+            padding: 6px 16px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #ddd;
+            text-decoration: none;
+        }
+        .footer-contacts a:hover { color: #e67e22; }
+
+        @media (max-width: 768px) {
+            header .container { flex-direction: column; gap: 15px; }
+            nav { justify-content: center; }
+            nav a { font-size: 14px; margin: 0 8px; }
+            .auth-container { margin: 30px 15px; padding: 25px 20px; }
+        }
+
+        @media (max-width: 480px) {
+            .auth-container { padding: 20px 15px; }
+            .auth-container h2 { font-size: 22px; }
+            .footer-contacts { flex-direction: column; align-items: center; }
+            .footer-contacts a { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="logo"><i class="fas fa-utensils"></i>Прикормка <span>от суши</span></div>
+        <nav>
+            <a href="index.html">Главная</a>
+            <a href="uslugi.html">Услуги</a>
+            <a href="index.html#contacts">Контакты</a>
+            <a href="login.html"><i class="fas fa-user"></i> Вход</a>
+            <a href="register.html" style="color:#e67e22;">Регистрация</a>
+        </nav>
+    </div>
+</header>
+
+<div class="auth-container">
+    <h2>Создайте аккаунт</h2>
+    <p class="sub">Заполните поля ниже</p>
+
+    <form action="cabinet.html">
+        <div class="form-group">
+            <label for="name">Имя и фамилия</label>
+            <input type="text" id="name" placeholder="Иван Петров" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="example@mail.ru" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Телефон</label>
+            <input type="tel" id="phone" placeholder="+7 (999) 123-45-67" required>
+            <div class="hint">Только цифры и знак +</div>
+        </div>
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <input type="password" id="password" placeholder="Минимум 8 символов" required minlength="8">
+        </div>
+
+        <div class="form-group checkbox">
+            <input type="checkbox" id="agree" required>
+            <label for="agree">
+                Я согласен с <a href="#">политикой обработки персональных данных</a>
+            </label>
+        </div>
+
+        <button type="submit" class="btn">Зарегистрироваться</button>
+    </form>
+
+    <p class="login-link">Уже есть аккаунт? <a href="login.html">Войти</a></p>
+</div>
+
+<footer id="contacts">
+    <div class="container">
+        <div style="font-size: 20px; font-weight: 700; color: #e67e22; margin-bottom: 10px;">Прикормка от суши</div>
+        <div class="footer-contacts">
+            <a href="https://vk.ru/prikormka_odureech" target="_blank"><i class="fab fa-vk"></i> Сообщество VK</a>
+            <a href="https://vk.ru/evilfinished" target="_blank"><i class="fas fa-user-circle"></i> Елена (личная)</a>
+            <a href="https://t.me/evilfinished" target="_blank"><i class="fab fa-telegram"></i> @evilfinished</a>
+            <a href="mailto:kvazar.dodo@gmail.com"><i class="fas fa-envelope"></i> kvazar.dodo@gmail.com</a>
+        </div>
+        <div style="font-size: 13px; color: #777; margin-top: 10px;">&copy; 2026 Прикормка от суши. Все права защищены.</div>
+    </div>
+</footer>
+
+</body>
+</html>

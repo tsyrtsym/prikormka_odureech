@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель — Прикормка от суши</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        header {
+            background: #1a1a1a;
+            padding: 15px 0;
+        }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo { font-size: 22px; font-weight: 800; color: #fff; }
+        .logo span { color: #e67e22; }
+        .logo i { color: #e67e22; margin-right: 8px; }
+        nav a {
+            color: #aaa;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        nav a:hover { color: #e67e22; }
+        nav a.active { color: #e67e22; }
+
+        .admin {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        .admin-sidebar {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            height: fit-content;
+        }
+        .admin-sidebar .user {
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+        .admin-sidebar .user .avatar {
+            font-size: 50px;
+            color: #ccc;
+        }
+        .admin-sidebar .user h4 { font-size: 16px; margin-top: 5px; }
+        .admin-sidebar .user p { font-size: 12px; color: #888; }
+        .admin-sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            color: #444;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+            margin-bottom: 2px;
+        }
+        .admin-sidebar nav a i { width: 20px; color: #999; }
+        .admin-sidebar nav a:hover { background: #f0f0f0; }
+        .admin-sidebar nav a.active {
+            background: #e67e22;
+            color: #fff;
+        }
+        .admin-sidebar nav a.active i { color: #fff; }
+
+        .admin-content {
+            background: #fff;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        .admin-content .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .admin-content .page-title .badge {
+            font-size: 14px;
+            font-weight: 400;
+            background: #f0f0f0;
+            padding: 4px 14px;
+            border-radius: 20px;
+            color: #666;
+        }
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .admin-stat {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 18px 15px;
+            text-align: center;
+        }
+        .admin-stat .num { font-size: 28px; font-weight: 700; color: #e67e22; }
+        .admin-stat .label { font-size: 13px; color: #666; }
+
+        .table-wrap { overflow-x: auto; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        table th {
+            text-align: left;
+            padding: 12px 10px;
+            background: #f5f5f5;
+            font-weight: 600;
+            border-bottom: 2px solid #ddd;
+        }
+        table td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        table .status {
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status.new { background: #e3f2fd; color: #0d47a1; }
+        .status.work { background: #fff3e0; color: #e65100; }
+        .status.done { background: #e8f5e9; color: #2e7d32; }
+        .status.files { background: #f3e5f5; color: #6a1b9a; }
+
+        .btn-sm {
+            padding: 4px 14px;
+            border-radius: 20px;
+            border: none;
+            background: #e67e22;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-sm:hover { background: #d35400; }
+        .btn-sm-outline {
+            background: transparent;
+            border: 1px solid #e67e22;
+            color: #e67e22;
+        }
+        .btn-sm-outline:hover { background: #e67e22; color: #fff; }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 14px;
+            background: #fafafa;
+        }
+        .form-group textarea { border-radius: 12px; height: 80px; resize: vertical; }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .btn {
+            background: #e67e22;
+            color: #fff;
+            padding: 10px 28px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn:hover { background: #d35400; }
+        .btn-outline { background: transparent; border: 2px solid #e67e22; color: #e67e22; }
+        .btn-outline:hover { background: #e67e22; color: #fff; }
+
+        footer {
+            background: #1a1a1a;
+            color: #aaa;
+            padding: 20px 0;
+            margin-top: 40px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            header .container { flex-direction: column; gap: 10px; }
+            nav a { margin: 0 10px; font-size: 14px; }
+            .admin { grid-template-columns: 1fr; }
+            .admin-sidebar { order: 2; }
+            .form-row { grid-template-columns: 1fr; }
+            .admin-stats { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 480px) {
+            .admin-content { padding: 15px; }
+            .admin-stats { grid-template-columns: 1fr; }
+            table { font-size: 12px; }
+            table th, table td { padding: 6px 4px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="logo"><i class="fas fa-utensils"></i>Прикормка <span>от суши</span> <span style="font-size:14px; color:#e67e22; font-weight:400;">| Админ</span></div>
+        <nav>
+            <a href="index.html">Главная</a>
+            <a href="admin-panel.html" class="active">Админ-панель</a>
+            <a href="login.html" style="color:#d35400;">Выйти</a>
+        </nav>
+    </div>
+</header>
+
+<div class="container">
+    <div class="admin">
+
+        <!-- Боковое меню -->
+        <aside class="admin-sidebar">
+            <div class="user">
+                <div class="avatar"><i class="fas fa-user-circle"></i></div>
+                <h4>Елена</h4>
+                <p>kvazar.dodo@gmail.com</p>
+            </div>
+            <nav>
+                <a href="#" class="active" data-tab="orders"><i class="fas fa-list"></i> Заказы</a>
+                <a href="#" data-tab="clients"><i class="fas fa-users"></i> Клиенты</a>
+                <a href="#" data-tab="services"><i class="fas fa-cogs"></i> Услуги</a>
+                <a href="#" data-tab="content"><i class="fas fa-upload"></i> Контент</a>
+                <a href="#" data-tab="analytics"><i class="fas fa-chart-line"></i> Аналитика</a>
+                <a href="#" data-tab="prompts"><i class="fas fa-file-alt"></i> Промпты</a>
+            </nav>
+        </aside>
+
+        <!-- Контент -->
+        <main class="admin-content">
+
+            <!-- 1. ЗАКАЗЫ -->
+            <div id="orders" class="tab-content">
+                <div class="page-title">
+                    <span>Все заказы <span class="badge">12 всего</span></span>
+                    <div>
+                        <select style="padding:6px 14px; border-radius:30px; border:1px solid #ddd; font-size:13px;">
+                            <option>Все статусы</option>
+                            <option>Новые</option>
+                            <option>В работе</option>
+                            <option>Готово</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th>Заказ</th><th>Клиент</th><th>Услуга</th><th>Статус</th><th>Действие</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>#12</td><td>Анна К.</td><td>Пост для блога</td><td><span class="status work">В работе</span></td><td><button class="btn-sm">Изменить статус</button></td></tr>
+                            <tr><td>#11</td><td>Максим П.</td><td>Генерация видео</td><td><span class="status done">Готово</span></td><td><button class="btn-sm">Изменить статус</button></td></tr>
+                            <tr><td>#10</td><td>Ольга Р.</td><td>3D-модель</td><td><span class="status new">Новый</span></td><td><button class="btn-sm">Изменить статус</button></td></tr>
+                            <tr><td>#9</td><td>Дмитрий С.</td><td>Сайт-визитка</td><td><span class="status files">Файлы загружены</span></td><td><button class="btn-sm">Изменить статус</button></td></tr>
+                            <tr><td>#8</td><td>Екатерина В.</td><td>Нейро картинки</td><td><span class="status done">Готово</span></td><td><button class="btn-sm">Изменить статус</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 2. КЛИЕНТЫ -->
+            <div id="clients" class="tab-content" style="display:none;">
+                <div class="page-title"><span>Клиенты <span class="badge">8 активных</span></span></div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Клиент</th><th>Email</th><th>Заказов</th><th>Действие</th></tr></thead>
+                        <tbody>
+                            <tr><td>Анна К.</td><td>anna@mail.ru</td><td>3</td><td><button class="btn-sm">Связаться</button></td></tr>
+                            <tr><td>Максим П.</td><td>max@ya.ru</td><td>2</td><td><button class="btn-sm">Связаться</button></td></tr>
+                            <tr><td>Ольга Р.</td><td>olga@bk.ru</td><td>1</td><td><button class="btn-sm">Связаться</button></td></tr>
+                            <tr><td>Дмитрий С.</td><td>dmitry@gmail.com</td><td>4</td><td><button class="btn-sm">Связаться</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 3. УСЛУГИ -->
+            <div id="services" class="tab-content" style="display:none;">
+                <div class="page-title"><span>Услуги <span class="badge">7 услуг</span></span></div>
+                <div style="margin-bottom:20px;">
+                    <button class="btn" style="padding:8px 20px; font-size:14px;"><i class="fas fa-plus"></i> Добавить услугу</button>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Название</th><th>Цена</th><th>Действие</th></tr></thead>
+                        <tbody>
+                            <tr><td>Генерация видео</td><td>1 000 ₽</td><td><button class="btn-sm">Редактировать</button> <button class="btn-sm btn-sm-outline">Удалить</button></td></tr>
+                            <tr><td>Нейро картинки</td><td>от 800 ₽</td><td><button class="btn-sm">Редактировать</button> <button class="btn-sm btn-sm-outline">Удалить</button></td></tr>
+                            <tr><td>3D-моделирование</td><td>от 400 ₽</td><td><button class="btn-sm">Редактировать</button> <button class="btn-sm btn-sm-outline">Удалить</button></td></tr>
+                            <tr><td>Быстрые тексты</td><td>400 ₽ / 1000 зн</td><td><button class="btn-sm">Редактировать</button> <button class="btn-sm btn-sm-outline">Удалить</button></td></tr>
+                            <tr><td>Пост для блога</td><td>от 1 000 ₽</td><td><button class="btn-sm">Редактировать</button> <button class="btn-sm btn-sm-outline">Удалить</button></td></tr>
+                            <tr><td>AI-агенты и промпты</td><td>от 4 500 ₽</td><td><button class="btn-sm">Редактировать</button> <button class="btn-sm btn-sm-outline">Удалить</button></td></tr>
+                            <tr><td>Сайты и боты</td><td>от 2 500 ₽</td><td><button class="btn-sm">Редактировать</button> <button class="btn-sm btn-sm-outline">Удалить</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 4. КОНТЕНТ -->
+            <div id="content" class="tab-content" style="display:none;">
+                <div class="page-title"><span>Контент</span></div>
+                <div class="form-row" style="margin-bottom:20px;">
+                    <div class="form-group"><label>Заказ</label><select><option>#11 — Генерация видео</option><option>#8 — Нейро картинки</option></select></div>
+                    <div class="form-group"><label>Загрузить файл</label><input type="file"></div>
+                </div>
+                <button class="btn" style="padding:8px 20px; font-size:14px;">Загрузить файл для клиента</button>
+                <div style="margin-top:20px;">
+                    <h4 style="margin-bottom:10px;">Портфолио</h4>
+                    <div style="display:flex; gap:15px; flex-wrap:wrap;">
+                        <div style="background:#f5f5f5; padding:20px; border-radius:12px; text-align:center; width:120px;"><i class="fas fa-video" style="font-size:30px; color:#e67e22;"></i><p style="font-size:12px; margin-top:5px;">Видео 1</p><button class="btn-sm">Удалить</button></div>
+                        <div style="background:#f5f5f5; padding:20px; border-radius:12px; text-align:center; width:120px;"><i class="fas fa-image" style="font-size:30px; color:#e67e22;"></i><p style="font-size:12px; margin-top:5px;">Картинка 1</p><button class="btn-sm">Удалить</button></div>
+                        <div style="background:#f5f5f5; padding:20px; border-radius:12px; text-align:center; width:120px;"><i class="fas fa-cube" style="font-size:30px; color:#e67e22;"></i><p style="font-size:12px; margin-top:5px;">3D-модель</p><button class="btn-sm">Удалить</button></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. АНАЛИТИКА -->
+            <div id="analytics" class="tab-content" style="display:none;">
+                <div class="page-title"><span>Аналитика</span></div>
+                <div class="admin-stats">
+                    <div class="admin-stat"><div class="num">12</div><div class="label">Всего заказов</div></div>
+                    <div class="admin-stat"><div class="num">34 500 ₽</div><div class="label">Общий доход</div></div>
+                    <div class="admin-stat"><div class="num">8</div><div class="label">Активных клиентов</div></div>
+                    <div class="admin-stat"><div class="num">Видео</div><div class="label">Самая популярная услуга</div></div>
+                </div>
+                <div style="background:#f5f5f5; border-radius:12px; padding:30px; text-align:center; color:#888;">
+                    <i class="fas fa-chart-bar" style="font-size:40px; color:#ccc;"></i>
+                    <p style="margin-top:10px;">Графики и диаграммы будут здесь. Пока это заглушка.</p>
+                </div>
+            </div>
+
+            <!-- 6. ПРОМПТЫ -->
+            <div id="prompts" class="tab-content" style="display:none;">
+                <div class="page-title"><span>Готовые промпты</span></div>
+                <div style="margin-bottom:20px;">
+                    <button class="btn" style="padding:8px 20px; font-size:14px;"><i class="fas fa-plus"></i> Добавить промпт</button>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Название</th><th>Ниша</th><th>Действие</th></tr></thead>
+                        <tbody>
+                            <tr><td>Пост через боль клиента</td><td>Бизнес</td><td><button class="btn-sm">Редактировать</button> <button class="btn-sm btn-sm-outline">Удалить</button></td></tr>
+                            <tr><td>Анализ аудитории</td><td>Маркетинг</td><td><button class="btn-sm">Редактировать</button> <button class="btn-sm btn-sm-outline">Удалить</button></td></tr>
+                            <tr><td>Сценарий для видео</td><td>Блогеры</td><td><button class="btn-sm">Редактировать</button> <button class="btn-sm btn-sm-outline">Удалить</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+</div>
+
+<footer>
+    <div class="container" style="text-align:center; font-size:13px; color:#777;">
+        &copy; 2026 Прикормка от суши. Административная панель.
+    </div>
+</footer>
+
+<script>
+    const sidebarLinks = document.querySelectorAll('.admin-sidebar nav a');
+    const contents = {
+        orders: document.getElementById('orders'),
+        clients: document.getElementById('clients'),
+        services: document.getElementById('services'),
+        content: document.getElementById('content'),
+        analytics: document.getElementById('analytics'),
+        prompts: document.getElementById('prompts')
+    };
+
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const tab = this.dataset.tab;
+            if (!tab) return;
+            sidebarLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+            Object.values(contents).forEach(el => el.style.display = 'none');
+            if (contents[tab]) contents[tab].style.display = 'block';
+        });
+    });
+</script>
+
+</body>
+</html>
